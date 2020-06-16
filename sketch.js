@@ -15,11 +15,6 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
 
-  polygon = Bodies.circle(200,200,40);
-  World.add(world,polygon);
-  
-  slingshot = new Slingshot(this.polygon,{x:100,y:200});
-
   ground = new Ground(600,585,1200,30);
 
   platform1 = new Ground(500,500,250,10);
@@ -66,15 +61,21 @@ function setup() {
   //3rd Row
   box25 = new Box(900,340,30,40);
 
+  var polygon_options ={
+    'restitution':0.02,
+     'friction':0.5, 
+     'density':1.2
+    }
+  polygon = Bodies.circle(200,200,40,polygon_options);
+  World.add(world,polygon);
+  
+  slingshot = new Slingshot(this.polygon,{x:100,y:200});
+
 }
 
 function draw() {
   background("#11254D");  
   Engine.update(engine);
-
-  ellipse(polygon.position.x,polygon.position.y,40);
-  imageMode(CENTER);
-  image(polygonImg, polygon.position.x, polygon.position.y, 50, 40);
 
   ground.display();
 
@@ -120,6 +121,9 @@ function draw() {
   fill("pink");
   box25.display();
 
+  imageMode(CENTER);
+  image(polygonImg, polygon.position.x, polygon.position.y, 50, 40);
+
   slingshot.display();
 
   fill("red");
@@ -128,7 +132,7 @@ function draw() {
 
 }
 function mouseDragged(){
-  Matter.Body.setPosition(polygon.body, {x: mouseX , y: mouseY});
+  Matter.Body.setPosition(this.polygon, {x: mouseX , y: mouseY});
 }
 
 function mouseReleased(){
